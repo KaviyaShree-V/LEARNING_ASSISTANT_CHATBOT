@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC ChatBot - Learning Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://img.freepik.com/free-photo/colorful-wallpaper-background-multicolored-generative-ai_91128-2257.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            text-align: center;
+        }
+        .box-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .hidden {
+            display: none;
+        }
+        .menu-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Index Page -->
+        <div class="box-container" id="indexPage">
+            <h2>ChatBot with Learning From Various Platforms</h2>
+            <button class="menu-button" onclick="showLogin()">Enter</button>
+        </div>
+
+        <!-- Login Page -->
+        <div class="box-container hidden" id="loginPage">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Enter your name"><br><br>
+            <input type="password" id="password" placeholder="Enter Password"><br><br>
+            <button class="menu-button" onclick="loginUser()">Login</button>
+            <p id="errorMessage" style="color: red; display: none;">Incorrect username or password!</p>
+        </div>
+
+        <!-- Main Menu -->
+        <div class="box-container hidden" id="mainPage">
+            <h2>Welcome to Learning Assistant Chatbot</h2>
+            <button class="menu-button" onclick="openChat()">Queries</button>
+            <button class="menu-button" onclick="viewMaterials()">View Study Materials</button>
+            <button class="menu-button" onclick="eLearning()">E-Learning</button>
+            <button class="menu-button" onclick="trackProgress()">Track Progress</button>
+            <button class="menu-button" onclick="openVoiceAssistant()">Voice Assistant</button> 
+            <button class="menu-button" onclick="syllabusCoverage()">Curriculum Completion</button>
+            <button class="menu-button" onclick="digitalLibrary()">Digital Library</button>
+        </div>
+
+        <!-- ChatGPT Query Section -->
+        <div class="box-container hidden" id="chatBox">
+            <h2>Ask the Learning Assistant</h2>
+            <button class="menu-button" onclick="redirectTo('https://chat.openai.com')">ChatGPT</button>
+            <button class="menu-button" onclick="redirectTo('https://openai.com')">OpenAI</button>
+            <button class="menu-button" onclick="redirectTo('https://www.deepseek.com')">DeepSeek</button>
+        </div>
+
+
+        <!-- Study Materials Page -->
+        <div class="box-container hidden" id="studyMaterialsPage">
+            <h2>Study Materials</h2>
+            <button class="menu-button" onclick="downloadPDF()">Download PDF</button>
+            <button class="menu-button" onclick="redirectTo('https://classroom.google.com')">Refer Study Materials</button>
+            <button class="menu-button" onclick="goBack()">Back</button>
+        </div>
+
+        <!-- E-Learning Page -->
+        <div class="box-container hidden" id="eLearningPage">
+            <h2>E-Learning Resources</h2>
+            <button class="menu-button" onclick="redirectTo('https://www.youtube.com')">YouTube</button>
+            <button class="menu-button" onclick="redirectTo('https://www.coursera.org')">Coursera</button>
+            <button class="menu-button" onclick="redirectTo('https://www.edx.org')">edX</button>
+            <button class="menu-button" onclick="redirectTo('https://scholar.google.com')">Google Scholar</button>
+            <button class="menu-button" onclick="redirectTo('https://openstax.org')">OpenStax</button>
+            <button class="menu-button" onclick="redirectTo('https://www.khanacademy.org')">Khan Academy</button>
+            <button class="menu-button" onclick="redirectTo('https://www.linkedin.com/learning')">LinkedIn Learning</button>
+            <button class="menu-button" onclick="redirectTo('https://www.udemy.com')">Udemy</button>
+            <button class="menu-button" onclick="goBack()">Back</button>
+        </div>
+
+        <!-- Digital Library Page -->
+        <div class="box-container hidden" id="digitalLibrary">
+            <h2>Digital Library</h2>
+            <button class="menu-button" onclick="redirectTo('https://books.google.com')">Google Books</button>
+            <button class="menu-button" onclick="redirectTo('https://www.hathitrust.org')">Hathi Trust</button>
+            <button class="menu-button" onclick="redirectTo('https://www.doabooks.org')">Directory of Open Access Books</button>
+            <button class="menu-button" onclick="redirectTo('https://nroer.gov.in')">National Repository of Open Resource (India)</button>
+            <button class="menu-button" onclick="goBack()">Back</button>
+        </div>
+
+        <!-- Voice Assistant -->
+        <div class="box-container hidden" id="voiceAssistantContainer">
+            <h2>Voice Assistant</h2>
+            <button onclick="startVoiceRecognition()">🎤 Speak</button>
+            <p id="voiceText">Your speech will appear here...</p>
+            <input type="text" id="voiceInput" placeholder="Your speech in text..." readonly>
+            <button class="menu-button" onclick="sendVoiceMessage()">Enter</button>
+            <p id="botResponse"></p>
+            <button class="menu-button" onclick="goBack()">Back</button>
+        </div>
+    </div>
+    
+    <script>
+        const defaultUsername = "kaviya";
+        const defaultPassword = "deva";
+
+        function loginUser() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (username === defaultUsername && password === defaultPassword) {
+                enterMainPage();
+            } else {
+                errorMessage.style.display = "block";
+            }
+        }
+
+
+        function openChat() {
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("chatBox").classList.remove("hidden");
+        }
+
+        function showLogin() {
+            document.getElementById("indexPage").classList.add("hidden");
+            document.getElementById("loginPage").classList.remove("hidden");
+        }
+
+        function enterMainPage() {
+            document.getElementById("loginPage").classList.add("hidden");
+            document.getElementById("mainPage").classList.remove("hidden");
+        }
+
+        function viewMaterials() {
+            document.getElementById("mainPage").classList.add("hidden");
+            document.getElementById("studyMaterialsPage").classList.remove("hidden");
+        }
+
+        function downloadPDF() {
+            window.open("study_materials.pdf", "_blank");
+        }
+
+        function eLearning() {
+            document.getElementById("mainPage").classList.add("hidden");
+            document.getElementById("eLearningPage").classList.remove("hidden");
+        }
+
+        function digitalLibrary() {
+            document.getElementById("mainPage").classList.add("hidden");
+            document.getElementById("digitalLibrary").classList.remove("hidden");
+        }
+
+        function openVoiceAssistant() {
+            document.getElementById("mainPage").classList.add("hidden");
+            document.getElementById("voiceAssistantContainer").classList.remove("hidden");
+        }
+
+        function startVoiceRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById("voiceText").innerText = "You said: " + transcript;
+                document.getElementById("voiceInput").value = transcript;
+            };
+            recognition.start();
+        }
+
+        function sendVoiceMessage() {
+            const userInput = document.getElementById("voiceInput").value.toLowerCase();
+            const botResponse = document.getElementById("botResponse");
+
+            if (userInput.includes("hello")) {
+                botResponse.innerText = "Hello! How can I assist you today?";
+            } else if (userInput.includes("study material")) {
+                botResponse.innerText = "Check the Study Materials section.";
+            } else {
+                botResponse.innerText = "I'm not sure. Try asking about study materials, e-learning, or progress tracking!";
+            }
+        }
+
+        function goBack() {
+            document.querySelectorAll(".box-container").forEach(box => box.classList.add("hidden"));
+            document.getElementById("mainPage").classList.remove("hidden");
+        }
+
+        function redirectTo(url) {
+            window.open(url, "_blank");
+        }
+    </script>
+</body>
+</html>
