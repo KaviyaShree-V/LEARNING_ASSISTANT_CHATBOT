@@ -50,7 +50,7 @@
         <!-- Index Page -->
         <div class="box-container" id="indexPage">
             <h2>ChatBot with Learning From Various Platforms</h2>
-            <button class="menu-button" onclick="showLogin()">Enter</button>
+            <button class="menu-button" onclick="showPage('loginPage')">Enter</button>
         </div>
 
         <!-- Login Page -->
@@ -65,13 +65,13 @@
         <!-- Main Menu -->
         <div class="box-container hidden" id="mainPage">
             <h2>Welcome to Learning Assistant Chatbot</h2>
-            <button class="menu-button" onclick="openChat()">Queries</button>
-            <button class="menu-button" onclick="viewMaterials()">View Study Materials</button>
-            <button class="menu-button" onclick="eLearning()">E-Learning</button>
-            <button class="menu-button" onclick="trackProgress()">Track Progress</button>
-            <button class="menu-button" onclick="openVoiceAssistant()">Voice Assistant</button> 
-            <button class="menu-button" onclick="syllabusCoverage()">Curriculum Completion</button>
-            <button class="menu-button" onclick="digitalLibrary()">Digital Library</button>
+            <button class="menu-button" onclick="showPage('chatBox')">Queries</button>
+            <button class="menu-button" onclick="showPage('studyMaterialsPage')">View Study Materials</button>
+            <button class="menu-button" onclick="showPage('eLearningPage')">E-Learning</button>
+            <button class="menu-button" onclick="showPage('trackProgress')">Track Progress</button>
+            <button class="menu-button" onclick="showPage('voiceAssistantContainer')">Voice Assistant</button> 
+            <button class="menu-button" onclick="showPage('syllabusCoverage')">Curriculum Completion</button>
+            <button class="menu-button" onclick="showPage('digitalLibrary')">Digital Library</button>
         </div>
 
         <!-- ChatGPT Query Section -->
@@ -81,7 +81,6 @@
             <button class="menu-button" onclick="redirectTo('https://openai.com')">OpenAI</button>
             <button class="menu-button" onclick="redirectTo('https://www.deepseek.com')">DeepSeek</button>
         </div>
-
 
         <!-- Study Materials Page -->
         <div class="box-container hidden" id="studyMaterialsPage">
@@ -131,56 +130,31 @@
         const defaultUsername = "kaviya";
         const defaultPassword = "deva";
 
+        // General helper function to show/hide pages
+        function showPage(pageId) {
+            const pages = document.querySelectorAll(".box-container");
+            pages.forEach(page => page.classList.add("hidden"));
+            document.getElementById(pageId).classList.remove("hidden");
+        }
+
         function loginUser() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
             const errorMessage = document.getElementById("errorMessage");
 
             if (username === defaultUsername && password === defaultPassword) {
-                enterMainPage();
+                showPage("mainPage");
             } else {
                 errorMessage.style.display = "block";
             }
-        }
-
-
-        function openChat() {
-    document.getElementById("mainPage").classList.add("hidden");
-    document.getElementById("chatBox").classList.remove("hidden");
-        }
-
-        function showLogin() {
-            document.getElementById("indexPage").classList.add("hidden");
-            document.getElementById("loginPage").classList.remove("hidden");
-        }
-
-        function enterMainPage() {
-            document.getElementById("loginPage").classList.add("hidden");
-            document.getElementById("mainPage").classList.remove("hidden");
-        }
-
-        function viewMaterials() {
-            document.getElementById("mainPage").classList.add("hidden");
-            document.getElementById("studyMaterialsPage").classList.remove("hidden");
         }
 
         function downloadPDF() {
             window.open("study_materials.pdf", "_blank");
         }
 
-        function eLearning() {
-            document.getElementById("mainPage").classList.add("hidden");
-            document.getElementById("eLearningPage").classList.remove("hidden");
-        }
-
-        function digitalLibrary() {
-            document.getElementById("mainPage").classList.add("hidden");
-            document.getElementById("digitalLibrary").classList.remove("hidden");
-        }
-
-        function openVoiceAssistant() {
-            document.getElementById("mainPage").classList.add("hidden");
-            document.getElementById("voiceAssistantContainer").classList.remove("hidden");
+        function redirectTo(url) {
+            window.open(url, "_blank");
         }
 
         function startVoiceRecognition() {
@@ -189,6 +163,9 @@
                 const transcript = event.results[0][0].transcript;
                 document.getElementById("voiceText").innerText = "You said: " + transcript;
                 document.getElementById("voiceInput").value = transcript;
+            };
+            recognition.onerror = function(event) {
+                document.getElementById("voiceText").innerText = "Error occurred: " + event.error;
             };
             recognition.start();
         }
@@ -207,12 +184,7 @@
         }
 
         function goBack() {
-            document.querySelectorAll(".box-container").forEach(box => box.classList.add("hidden"));
-            document.getElementById("mainPage").classList.remove("hidden");
-        }
-
-        function redirectTo(url) {
-            window.open(url, "_blank");
+            showPage("mainPage");
         }
     </script>
 </body>
