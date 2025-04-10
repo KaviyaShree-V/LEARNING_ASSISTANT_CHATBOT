@@ -65,4 +65,4 @@ Once logged in, the user can access the following options:
 This project is open-source. Feel free to modify and enhance it as per your requirements.
 
 ## Contact 📬
-For issues or suggestions, open an issue in this repository or contact the repository maintainer.
+For issues or suggestions, open an issue in this repository or contact.
