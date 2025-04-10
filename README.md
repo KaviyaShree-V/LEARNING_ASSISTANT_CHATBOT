@@ -66,5 +66,5 @@ Provides links to external digital libraries such as Google Books, Hathi Trust, 
 This project is open-source. Feel free to modify and enhance it as per your requirements.
 
 ## Contact 📬
-For issues or suggestions, open an issue in this repository or contact the project maintainer.
+For issues or suggestions, open an issue in this repository or contact.
 
